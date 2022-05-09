@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:forestvpn_test/repositories/news/news_feed.dart';
+import 'package:forestvpn_test/styles/colors.dart';
 
 void main() {
   runApp(const ForestVPNTestApp());
@@ -9,13 +11,12 @@ class ForestVPNTestApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'ForestVPN test',
-      home: Scaffold(
-        body: Center(
-          child: Text('News screen'),
-        ),
-      ),
+      initialRoute: "/",
+      routes: <String,WidgetBuilder>{
+        "/": (context) => const Article(),
+      },
     );
   }
 }
