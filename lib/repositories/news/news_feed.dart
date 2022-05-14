@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forestvpn_test/repositories/news/repository.dart';
 import 'package:forestvpn_test/styles/colors.dart';
 import 'package:forestvpn_test/styles/text_styles.dart';
 
-class Article extends StatelessWidget {
-  const Article({Key? key}) : super(key: key);
+class Articles extends StatefulWidget {
+  const Articles({Key? key}) : super(key: key);
+
+  @override
+  State<Articles> createState() => _ArticlesState();
+}
+
+class _ArticlesState extends State<Articles> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -12,66 +20,89 @@ class Article extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: const Text(
-          'Журнал звонков',
+          "Test",
           style: TextStyle(color: AppColor.primary),
         ),
         backgroundColor: AppColor.secondary,
         systemOverlayStyle: const SystemUiOverlayStyle(
-          // Status bar color
           statusBarColor: AppColor.secondary,
 
-          // Status bar brightness (optional)
           statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(left: 28),
-            child: Text(
-              "Featured",
-              style: AppTextStyle.typography(),
+      body: ListView(children: [
+        Column(
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(left: 28),
+              child: Text(
+                "Featured",
+                style: AppTextStyle.typography(),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 358,
-            padding: const EdgeInsets.all(28),
-            color: Colors.red,
-            child: Row(
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              // height: 358,
+              padding: const EdgeInsets.all(28),
+              // color: Colors.red,
+              child: FutureBuilder<List<Article>>(
+                future: MockNewsRepository().getLatestArticles(),
+                builder: (context, snapshot) {
+                  final feeds = snapshot.data;
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const Center(child: CircularProgressIndicator());
+                    default:
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Ошибка"),
+                        );
+                      } else {
+                        return buildArticle(feeds!);
+                      }
+                  }
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Column(
               children: [
                 Container(
-                  height: 200,
-                  padding: const EdgeInsets.all(28),
-                  color: Colors.black,
-                )
+                    padding: const EdgeInsets.only(left: 28),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Latest news",
+                      style: AppTextStyle.typography(),
+                    )),
+                Row(),
               ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            children: [
-              Container(
-                  padding: const EdgeInsets.only(left: 28),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Latest news",
-                    style: AppTextStyle.typography(),
-                  )),
-              Row(
-                Co
-              ),
-            ],
-
-          )
-        ],
-      ),
+            )
+          ],
+        ),
+      ]),
     );
   }
+
+  Widget buildArticle(List<Article> feeds) => ListView.builder(
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        itemCount: feeds.length,
+        itemBuilder: (context, index) {
+          final feed = feeds[index];
+
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(feed.imageUrl),
+            ),
+            title: Text(feed.title),
+            subtitle: Text(feed.id),
+          );
+        },
+      );
 }

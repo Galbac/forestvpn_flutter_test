@@ -14,4 +14,5 @@ class Article {
   final String imageUrl;
   final bool readed;
   final String? description;
+
 }

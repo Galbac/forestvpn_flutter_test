@@ -1,6 +1,6 @@
 import 'package:forestvpn_test/repositories/news/repository.dart';
 
-class MockNewsRepository implements AbstractNewsRepository {
+    class MockNewsRepository implements AbstractNewsRepository {
   @override
   Future<List<Article>> getLatestArticles() async {
     return _mockArticles;
