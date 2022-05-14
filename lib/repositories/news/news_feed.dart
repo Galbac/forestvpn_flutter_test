@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forestvpn_test/repositories/news/repository.dart';
+import 'package:forestvpn_test/repositories/widget/card.dart';
 import 'package:forestvpn_test/styles/colors.dart';
 import 'package:forestvpn_test/styles/text_styles.dart';
 
@@ -12,8 +13,6 @@ class Articles extends StatefulWidget {
 }
 
 class _ArticlesState extends State<Articles> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,15 +38,15 @@ class _ArticlesState extends State<Articles> {
               padding: const EdgeInsets.only(left: 28),
               child: Text(
                 "Featured",
-                style: AppTextStyle.typography(),
+                style: AppTextStyle.typography20(),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             Container(
-              // height: 358,
-              padding: const EdgeInsets.all(28),
+
+              padding: const EdgeInsets.only(left: 28, right: 28),
               // color: Colors.red,
               child: FutureBuilder<List<Article>>(
                 future: MockNewsRepository().getLatestArticles(),
@@ -62,7 +61,9 @@ class _ArticlesState extends State<Articles> {
                           child: Text("Ошибка"),
                         );
                       } else {
-                        return buildArticle(feeds!);
+                        return
+                            // buildArticle(feeds!);
+                            CardsArticle(articles: feeds!);
                       }
                   }
                 },
@@ -78,7 +79,7 @@ class _ArticlesState extends State<Articles> {
                     alignment: Alignment.topLeft,
                     child: Text(
                       "Latest news",
-                      style: AppTextStyle.typography(),
+                      style: AppTextStyle.typography20(),
                     )),
                 Row(),
               ],
@@ -96,13 +97,17 @@ class _ArticlesState extends State<Articles> {
         itemBuilder: (context, index) {
           final feed = feeds[index];
 
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(feed.imageUrl),
-            ),
-            title: Text(feed.title),
-            subtitle: Text(feed.id),
+          return CardsArticle(
+            articles: feeds,
           );
+          // CarouselSlider(items: , options: options)
+          // return ListTile(
+          //   leading: CircleAvatar(
+          //     backgroundImage: NetworkImage(feed.imageUrl),
+          //   ),
+          //   title: Text(feed.title),
+          //   subtitle: Text(feed.id),
+          // );
         },
       );
 }

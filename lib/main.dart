@@ -14,7 +14,7 @@ class ForestVPNTestApp extends StatelessWidget {
       title: 'ForestVPN test',
       initialRoute: "/",
       routes: <String,WidgetBuilder>{
-        "/": (context) =>  const Articles(),
+        "/": (context) =>   Articles(),
       },
     );
   }
