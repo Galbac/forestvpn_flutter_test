@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forestvpn_test/repositories/news/news_feed.dart';
+import 'package:forestvpn_test/repositories/widget/full_screen.dart';
 
 void main() {
   runApp(const ForestVPNTestApp());
@@ -14,7 +15,7 @@ class ForestVPNTestApp extends StatelessWidget {
       title: 'ForestVPN test',
       initialRoute: "/",
       routes: <String,WidgetBuilder>{
-        "/": (context) =>   Articles(),
+        "/": (context) =>    const Articles(),
       },
     );
   }
