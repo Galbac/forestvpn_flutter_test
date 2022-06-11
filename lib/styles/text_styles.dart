@@ -31,7 +31,7 @@ class AppTextStyle {
       fontSize: 12,
       fontWeight: FontWeight.w500,
       color: color,
-      // fontFamily: 'SFProDisplay',
+      fontFamily: 'SFProDisplay',
     );
   }
   static TextStyle r18({Color? color = AppColor.primary}) {
